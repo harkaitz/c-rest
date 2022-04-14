@@ -11,6 +11,7 @@ HEADERS     =             \
     jansson/extra.h       \
     kcgi/extra-cookies.h  \
     kcgi/extra-redirect.h \
+    kcgi/extra-fields.h   \
     str/urlencode.h
 PROGRAMS    =             \
     tools/urlencode

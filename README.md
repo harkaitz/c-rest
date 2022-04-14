@@ -5,8 +5,9 @@ help developing REST applications.
 
 + *curl/crest.h*          : Rest operations using *curl*. [man](doc/crest.3.md)
 + *jansson/extra.h*       : Some extra functions for *jansson*.
-+ *kcgi/extra-cookies.h*  :
-+ *kcgi/extra-redirect.h* :
++ *kcgi/extra-cookies.h*  : Set cookies in kcgi apps.
++ *kcgi/extra-redirect.h* : Make redirections in kcgi apps.
++ *kcgi/extra-fields.h*   : Get fields in kchi apps.
 + *str/urlencode.h*       : URL encoding. [man](doc/urlencode.3.md)
 
 ## Collaborating
