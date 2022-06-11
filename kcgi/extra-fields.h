@@ -11,12 +11,14 @@
 static inline
 struct kpair *kreq_field(struct kreq *_k, int _id, int _type) {
     struct kpair *v;
-    return ((v = _k->fieldmap[_id]) && (v->type == _type))?v:NULL;
+    return ((v = _k->fieldmap[_id]) &&
+            (v->type == _type || _type == KPAIR_UNCHECKED))?v:NULL;
 }
 static inline
 struct kpair *kreq_cookie(struct kreq *_k, int _id, int _type) {
     struct kpair *v;
-    return ((v = _k->cookiemap[_id]) && (v->type == _type))?v:NULL;
+    return ((v = _k->cookiemap[_id]) &&
+            (v->type == _type  || _type == KPAIR_UNCHECKED))?v:NULL;
 }
 
 static inline
