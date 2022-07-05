@@ -2,6 +2,7 @@
 #define CURL_CREST_H
 
 #include "../str/urlencode.h"
+#include <io/slog.h>
 #include <curl/curl.h>
 #include <jansson.h>
 #include <stdbool.h>
@@ -239,31 +240,31 @@ bool crest_get_json(json_t **_o, const char _ctype[], long _rcode, char _d[], si
     json_t       *j;
     json_error_t  e = {0};
     if (strcmp(_ctype, CREST_CONTENT_TYPE_JSON)) {
-        syslog(LOG_ERR, "The server didn't return a JSON.");
+        error("The server didn't return a JSON.");
         goto cleanup;
     }
     o = json_loadb(_d, _dsz, JSON_ALLOW_NUL, &e);
     if (!o) {
-        syslog(LOG_ERR, "Failed parsing response: %i:%s", e.line, e.text);
+        error("Failed parsing response: %i:%s", e.line, e.text);
         goto cleanup;
     }
     if ((j = json_object_get(o, "error"))) {
         const char *c = json_string_value(json_object_get(j, "code"));
         const char *t = json_string_value(json_object_get(j, "type"));
         const char *m = json_string_value(json_object_get(j, "message"));
-        syslog(LOG_ERR, "Response: %.*s", (int)_dsz, _d);
-        syslog(LOG_ERR, "Failed, return code %li: %s: %s", _rcode,(c)?c:((t)?t:""),(m)?m:"");
+        error("Response: %.*s", (int)_dsz, _d);
+        error("Failed, return code %li: %s: %s", _rcode,(c)?c:((t)?t:""),(m)?m:"");
         goto cleanup;
     }
     if ((j = json_object_get(o, "errorCode")) && json_is_integer(j)) {
         long long errorCode = json_integer_value(j);
         if (errorCode >= 300) {
-            syslog(LOG_ERR, "Failed, error code in json: %lli: %.*s", errorCode, (int)_dsz, _d);
+            error("Failed, error code in json: %lli: %.*s", errorCode, (int)_dsz, _d);
             goto cleanup;
         }
     }
     if (_rcode != 200) {
-        syslog(LOG_ERR, "Failed, return code %li.", _rcode);
+        error("Failed, return code %li.", _rcode);
         goto cleanup;
     }
     *_o = json_incref(o);
