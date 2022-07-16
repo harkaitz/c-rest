@@ -38,15 +38,19 @@ install:
 clean:
 	rm -f $(PROGRAMS)
 ## -- manpages --
+ifneq ($(PREFIX),)
 MAN_3=./doc/crest.3 ./doc/urlencode.3 
 install: install-man3
 install-man3: $(MAN_3)
 	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man3
 	cp $(MAN_3) $(DESTDIR)$(PREFIX)/share/man/man3
+endif
 ## -- manpages --
 ## -- license --
+ifneq ($(PREFIX),)
 install: install-license
 install-license: LICENSE
 	mkdir -p $(DESTDIR)$(PREFIX)/share/doc/c-rest
 	cp LICENSE $(DESTDIR)$(PREFIX)/share/doc/c-rest
+endif
 ## -- license --
